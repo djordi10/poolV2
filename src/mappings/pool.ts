@@ -13,27 +13,37 @@ if (!entity) {
   entity = new Pool(evtPoolInfo.address.toHexString())
 }
 
-let participantEntity = PoolParticipant.load(evtPoolInfo.address.toHexString()+"-"+evtPoolInfo.params.initiator.toHexString())
+let participantEntity = PoolParticipant.load(evtPoolInfo.address.toHexString()+evtPoolInfo.params.initiator.toHexString())
 
 if (!participantEntity) {
-  participantEntity = new PoolParticipant(evtPoolInfo.address.toHexString()+"-"+evtPoolInfo.params.initiator.toHexString())
+  participantEntity = new PoolParticipant(evtPoolInfo.address.toHexString()+evtPoolInfo.params.initiator.toHexString())
 }
 
 let userEntity = User.load(evtPoolInfo.params.initiator.toHexString())
 
 if (!userEntity) {
   userEntity = new User(evtPoolInfo.params.initiator.toHexString())
-}
-userEntity.pool.push(entity.id)
+  }
+  
+entity.save()
+  
+let userPool = userEntity.pool;
+userPool.push(entity.id);
+userEntity.pool = userPool;
+  
+userEntity.save()
 
 
 participantEntity.user = userEntity.id;
 participantEntity.balance = evtPoolInfo.params.value;
 participantEntity.pool = entity.id;
-// entity.participant = participantEntity.id;
-entity.member.push(participantEntity.id);
 participantEntity.save()
-entity.save()
+// entity.participant = participantEntity.id;
+let poolMember = entity.member;
+poolMember.push(participantEntity.id);
+entity.member = poolMember;
+
+entity.save();
 }
 //entity.poolParticipant.push(participantEntity.id);
 
