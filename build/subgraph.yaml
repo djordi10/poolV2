@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: PoolFactory
@@ -16,11 +16,12 @@ dataSources:
         - PoolCreation
       abis:
         - name: PoolFactory
-          file: ./abis/PoolFactory.json
+          file: PoolFactory\abis\PoolFactory.json
       eventHandlers:
-        - event: PoolCreation(indexed uint256,indexed address,indexed address,uint256,uint256,uint256,uint256,uint256)
+        - event: PoolCreation(indexed uint256,indexed address,indexed
+            address,uint256,uint256,uint256,uint256,uint256)
           handler: handlePoolCreation
-      file: ./src/mappings/factory.ts
+      file: PoolFactory\PoolFactory.wasm
 templates:
   - kind: ethereum/contract
     name: MetaversepadTemplate
@@ -35,10 +36,10 @@ templates:
         - MetaversepadPool
       abis:
         - name: Metaversepad
-          file: ./abis/Metaversepad.json
+          file: MetaversepadTemplate\abis\Metaversepad.json
         - name: PoolFactory
-          file: ./abis/PoolFactory.json
+          file: MetaversepadTemplate\abis\PoolFactory.json
       eventHandlers:
         - event: FundPool(indexed uint256,indexed address,uint256)
           handler: handleFundPool
-      file: ./src/mappings/pool.ts
+      file: templates\MetaversepadTemplate\MetaversepadTemplate.wasm
