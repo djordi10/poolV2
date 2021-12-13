@@ -1,0 +1,26 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: PoolFactory
+    network: chapel
+    source:
+      address: "0xa6a90a7cFFdcceB2a9E3CF61a9a01B04F049A376"
+      abi: PoolFactory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - OwnershipTransferred
+        - PoolCreation
+      abis:
+        - name: PoolFactory
+          file: ./abis/PoolFactory.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PoolCreation(indexed uint256,indexed address,indexed address,uint256,uint256,uint256,uint256,uint256)
+          handler: handlePoolCreation
+      file: ./src/mapping.ts
