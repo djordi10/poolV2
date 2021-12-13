@@ -23,26 +23,16 @@ let userEntity = User.load(evtPoolInfo.params.initiator.toHexString())
 
 if (!userEntity) {
   userEntity = new User(evtPoolInfo.params.initiator.toHexString())
-  }
-entity.save()
-let userPool = userEntity.pool;
-userPool.push(entity.id);
-userEntity.pool = userPool;
-  
-userEntity.save()
+}
+userEntity.pool.push(entity.id)
 
 
 participantEntity.user = userEntity.id;
 participantEntity.balance = evtPoolInfo.params.value;
 participantEntity.pool = entity.id;
-participantEntity.save()
 // entity.participant = participantEntity.id;
-let poolMember = entity.member;
-poolMember.push(participantEntity.id);
-entity.member = poolMember;
-
-
-
+entity.member.push(participantEntity.id);
+participantEntity.save()
 entity.save()
 }
 //entity.poolParticipant.push(participantEntity.id);
